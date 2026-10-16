@@ -6,7 +6,7 @@
 
 **A Rust-native tensor and deep learning framework for Python.**
 
-[![Version](https://img.shields.io/badge/version-v0.10.0-blue)](https://github.com/lncch/DenseCore)
+[![PyPI](https://img.shields.io/pypi/v/densecore)](https://pypi.org/project/densecore/)
 ![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13-3776AB)
 ![Rust](https://img.shields.io/badge/core-Rust-CE422B)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -14,6 +14,10 @@
 </div>
 
 DenseCore is an MIT-licensed deep-learning library: a Rust engine with a PyTorch-shaped Python API, for CPU training and inference of small models.
+
+```sh
+pip install densecore
+```
 
 **Its results match PyTorch bit for bit.** Point `import torch` at DenseCore, run Karpathy's [nanoGPT](https://github.com/karpathy/nanoGPT) unchanged, and from `torch.manual_seed(1337)` you get PyTorch's exact initial weights, loss, gradients and weights at every training step, with or without dropout. Not "within 1e-5": the same bits.
 
