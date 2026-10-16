@@ -36,7 +36,7 @@ Limits: CPU only, float32 math, exact against PyTorch 2.14.1 on Apple-silicon ma
 
 Built by Almoayyad Abuljdail with heavy use of AI coding tools (OpenAI Codex and Anthropic Claude Code).
 
-Version **0.10.0 is a local release candidate**. No public package upload or GitHub release has occurred. Build from this repository or install a matching local wheel.
+Install with `pip install densecore`. Wheels cover Apple-silicon macOS and Linux (x86-64 and ARM) on Python 3.11 to 3.13; other platforms build from the source package and need Rust.
 
 ## Features
 
@@ -50,9 +50,17 @@ Version **0.10.0 is a local release candidate**. No public package upload or Git
 
 ## Install DenseCore
 
-Run commands from the repository root. Runtime requirements are Python 3.11 or newer, NumPy `>=2,<3` and safetensors `>=0.8,<0.9`. PyTorch is optional and used for development comparisons and weight conversion.
+Runtime requirements are Python 3.11 or newer, NumPy `>=2,<3` and safetensors `>=0.8,<0.9`. PyTorch is optional and used for development comparisons and weight conversion.
+
+### From PyPI
+
+```sh
+python -m pip install densecore
+```
 
 ### Build from source
+
+Run commands from the repository root.
 
 Install Rust 1.88 or newer and a platform linker before building. macOS builds require Xcode Command Line Tools; Linux builds require C build tools. Validation used Rust 1.99.0; the minimum compiler version comes from `Cargo.toml`.
 
