@@ -53,6 +53,7 @@ def test_unary_values_and_gradients(name, threads):
             assert same_bits(got, want), (name, n)
 
 
+@pytest.mark.mac_exact
 def test_wide_inputs_cover_special_values(threads):
     rng = np.random.default_rng(0)
     x = np.concatenate([rng.integers(0, 2**32, 200000, dtype=np.uint64).astype(np.uint32).view(np.float32),
@@ -72,6 +73,7 @@ def test_gelu_values_and_gradients(threads):
             assert same_bits(got, want), n
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('x_size', ['same', 'one'])
 def test_atan2_values_and_gradients(threads, x_size):
     rng = np.random.default_rng(9)

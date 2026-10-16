@@ -42,6 +42,7 @@ def test_same_shape_and_leading_one_match_torch(name, shape_y):
             _bits_match(got, want)
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('name', OPS)
 @pytest.mark.parametrize('small_shape', [(), (1,), (6,), (4, 6), (1, 1, 6)])
 @pytest.mark.parametrize('small_is_left', [False, True])

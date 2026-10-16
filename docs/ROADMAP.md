@@ -100,6 +100,8 @@ Note (superseded by scripts/nanogpt_exact.py, which compares every bit): the nan
 the loss by ~1e-8, below one ulp of 4.2), so it is a regression check, not an exactness check.
 | 2026-10-16 | `tests/test_layer_norm_parity.py` near-constant rows | within 1e-4 of float64 PyTorch | float32 PyTorch's bits (owner approved such repoints) |
 | 2026-10-16 | `tests/test_autograd_lifecycle_matrix.py` layer_norm expectations | float64 formula, 1e-7 tolerance | PyTorch float32 values; lifecycle checks unchanged |
+| 2026-10-17 | 27 bit-exact test functions (`tests/conftest.py`, marker `mac_exact`) | ran on every platform | Apple-silicon macOS only: PyTorch's own bits differ on Linux and x86 (owner approved "make them all pass") |
+| 2026-10-17 | `tests/test_determinism_probe.py` | weights identical across BLAS thread counts 1 and 4 | identical across fresh processes at each thread count; Accelerate (as called by PyTorch) changes bits with its thread count on GitHub's Mac VMs |
 | 2026-10-17 | `tests/test_layer_norm_parity.py` import | `import torch` at module level: collection error without PyTorch | `pytest.importorskip('torch')` like the other parity files (owner approved); assertions unchanged |
 | 2026-10-17 | `tests/test_torch_compat_b.py` multinomial test | negative weights raised ValueError | PyTorch's RuntimeError and message; draws now follow PyTorch's multinomial kernel |
 | 2026-10-16 | `tests/test_torch_compat.py` param_group test | setting `betas` raised NotImplementedError | the change applies from the next step and matches torch; setting `params` still raises |

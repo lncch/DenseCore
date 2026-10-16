@@ -45,7 +45,7 @@ Version **0.10.0 is a local release candidate**. No public package upload or Git
 - Ten dtypes (float32, float64, float16, bfloat16, int8/16/32/64, uint8, bool); conversions match PyTorch bit for bit, and math with gradients is float32
 - Rust-owned tensors with version-checked gradients, safetensors checkpoints and pickle-free `save`/`load`
 - Guarded module compilation and fused training steps for supported models
-- Bit-identical training results across thread counts on one machine ([probe](benchmarks/DETERMINISM_RESULTS.md))
+- Bit-identical training results across fresh processes with the same settings ([probe](benchmarks/DETERMINISM_RESULTS.md)); as in PyTorch, changing thread counts can change the last bits
 - PyTorch's exact numerics on CPU float32: reductions, vector math, BLAS calls, flash attention, optimizers, LR schedulers, the random generator, nn init, dropout and `torch.utils.data` ([roadmap](docs/ROADMAP.md))
 
 ## Install DenseCore

@@ -36,6 +36,7 @@ def values_for(src, dst):
     return [v for v in ints if src != 'uint8' or v >= 0] if src != 'bool' else [True, False]
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('src', ALL)
 @pytest.mark.parametrize('dst', ALL)
 def test_every_conversion_matches_torch_bit_for_bit(src, dst):
@@ -48,6 +49,7 @@ def test_every_conversion_matches_torch_bit_for_bit(src, dst):
     np.testing.assert_array_equal(bits(ours), bits(theirs))
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('source', ['float32', 'float64'])
 def test_bfloat16_rounding_matches_torch_including_ties(source):
     rng = np.random.default_rng(0)

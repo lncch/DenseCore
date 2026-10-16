@@ -9,6 +9,7 @@ CASES = [((7,), None), ((100000,), None), ((300001,), None), ((5, 40000), (0,)),
          ((2, 3, 4, 5, 6), (0, 2, 4)), ((5, 1, 7), (0,)), ((40000, 3), (0,)), ((33, 1025), (1,))]
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('threads', [1, 4, 7])
 @pytest.mark.parametrize('shape,axes', CASES)
 def test_sum_and_mean_match_torch_bits(shape, axes, threads):

@@ -22,6 +22,7 @@ def _np(t):
 SIZES = [1, 3, 15, 16, 17, 33, 1000]
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize("seed", [0, 1337, 2**40 + 7, -5])
 def test_sampler_stream_matches_torch(seed):
     torch.manual_seed(seed); d.manual_seed(seed)
@@ -44,6 +45,7 @@ def test_sampler_stream_matches_torch(seed):
     assert d.initial_seed() == torch.initial_seed()
 
 
+@pytest.mark.mac_exact
 def test_generator_objects():
     tg, dg = torch.Generator().manual_seed(7), d.Generator().manual_seed(7)
     assert _same(torch.randn(40, generator=tg).numpy(), d.randn(40, generator=dg).numpy())
@@ -55,6 +57,7 @@ def test_generator_objects():
     assert _same(first, d.rand(5, generator=dg).numpy())
 
 
+@pytest.mark.mac_exact
 def test_module_init_matches_torch():
     for seed in (0, 3):
         torch.manual_seed(seed); d.manual_seed(seed)
