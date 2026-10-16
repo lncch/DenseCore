@@ -38,8 +38,6 @@ How it gets there, and where it stops: [the write-up](docs/WRITEUP_DRAFT.md).
 
 Limits: CPU only, float32 math, exact against PyTorch 2.14.1 on Apple-silicon macOS (PyTorch itself gives different bits on Linux and x86). DenseCore is slower than PyTorch, roughly 1.5x to 3x on the nanoGPT step.
 
-Built by Almoayyad Abuljdail with heavy use of AI coding tools (OpenAI Codex and Anthropic Claude Code).
-
 Install with `pip install densecore`. Wheels cover Apple-silicon macOS and Linux (x86-64 and ARM) on Python 3.11 to 3.13; other platforms build from the source package and need Rust.
 
 ## Features
