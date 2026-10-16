@@ -1,0 +1,73 @@
+name: CPU wheels and installed-package tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  wheels:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14]
+        python: ['3.11', '3.12', '3.13']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b
+        with:
+          command: build
+          args: --release --out dist -i python${{ matrix.python }}
+          manylinux: auto
+      - name: Install wheel without PyTorch
+        run: python -m pip install dist/*.whl pytest
+      - name: Inspect wheel metadata and license payload
+        run: python scripts/check_release_artifacts.py --wheel dist/*.whl
+      - name: Test installed wheel
+        run: python -m pytest tests -q --ignore=tests/test_torch_parity.py --ignore=tests/test_conversion.py --ignore=tests/test_layer_norm_parity.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wheel-${{ matrix.os }}-${{ matrix.python }}
+          path: dist/*.whl
+  rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - name: Rust release checks
+        run: |
+          rustup component add clippy rustfmt
+          cargo fmt --all -- --check
+          cargo test --release
+          cargo clippy --release --all-targets -- -D warnings
+  oracle:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - name: Install development dependencies and build extension
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install -r requirements-dev.txt
+          VIRTUAL_ENV="$PWD/.venv" .venv/bin/maturin develop --release
+      - name: Build and inspect source distribution
+        run: |
+          .venv/bin/maturin sdist --out dist
+          .venv/bin/python scripts/check_release_artifacts.py --sdist dist/*.tar.gz
+      - name: Full Python suite including PyTorch oracle tests
+        run: .venv/bin/python -m pytest tests -q
+      - name: Install source distribution in a fresh environment
+        run: |
+          python -m venv "$RUNNER_TEMP/densecore-source"
+          source "$RUNNER_TEMP/densecore-source/bin/activate"
+          "$RUNNER_TEMP/densecore-source/bin/python" -m pip install maturin==1.15.0 pytest
+          "$RUNNER_TEMP/densecore-source/bin/python" -m pip install --no-build-isolation dist/*.tar.gz
+          "$RUNNER_TEMP/densecore-source/bin/python" -m pytest tests -q --ignore=tests/test_torch_parity.py --ignore=tests/test_conversion.py --ignore=tests/test_layer_norm_parity.py

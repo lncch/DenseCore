@@ -1,0 +1,17 @@
+/target/
+/dist/
+__pycache__/
+.pytest_cache/
+*.so
+
+/benchmarks/results.json
+
+/data/
+/.venv/
+
+# Generated evidence requires explicit review before promotion to tracked files.
+/benchmarks/*.json
+/benchmarks/*.json.gz
+/benchmarks/*.prof
+/benchmarks/letter-quality/
+/src/*.before_*

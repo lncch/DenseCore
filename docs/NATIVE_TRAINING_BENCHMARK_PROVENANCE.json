@@ -1,0 +1,17 @@
+{
+  "benchmark": "benchmarks/native-training-workspace.json",
+  "source_commit": "0684351",
+  "note": "Final timed implementation before version metadata changed to0.10. Runtime source unchanged by version bump. Commit also includes final post-timing GC callback test.",
+  "cpu": "Apple M4",
+  "densecore_installed_development_version": "0.9.0",
+  "torch_version": "2.14.1",
+  "native_extension_sha256": "7efa53362d480d54fa32fda67caccfa699c5d5c69a3169a17fcbcf721651733f",
+  "source_sha256": {
+    "src/graph_api.rs": "3417eb6b6f30238cafdd2c01be5a25161a78b8a3c56f9a750a56d534af6564eb",
+    "src/graph_backward.rs": "6cb38887bb2171a2cb7956ef03467a7a824d70d4eb9b2eb2fae0a004528cb7c4",
+    "src/optim.rs": "8c14d852f74d2c206d04a0f6eca809eb41d1260a4ce063df3c72e3faa017d13d",
+    "python/densecore/native_training.py": "1b7720ecbb92d80bc0dc30fbf41ecab17324dfb7aca02b08ebe2b4b689e7725e",
+    "python/densecore/compilation.py": "fcdc1e85c5bb1758d026f9aaead9b5e6be530802d981ed3a3e1519a750f88aa2",
+    "benchmarks/benchmark_native_training.py": "487e72da6366179b41b03924871bc69b174ba58422757e558b9616966e5c4865"
+  }
+}

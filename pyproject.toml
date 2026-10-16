@@ -1,0 +1,18 @@
+[build-system]
+requires = ["maturin>=1.15,<2"]
+build-backend = "maturin"
+
+[project]
+name = "densecore"
+version = "0.10.0"
+requires-python = ">=3.11"
+dependencies = ["numpy>=2,<3", "safetensors>=0.8,<0.9"]
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md", "THIRD_PARTY_LICENSES/**/*"]
+description = "Rust-backed CPU float32 training and guarded graph compilation"
+readme = "README.md"
+
+[tool.maturin]
+python-source = "python"
+module-name = "densecore._native"
+features = ["pyo3/extension-module"]

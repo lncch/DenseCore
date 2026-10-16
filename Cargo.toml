@@ -1,0 +1,19 @@
+[package]
+name = "densecore"
+version = "0.10.0"
+edition = "2024"
+rust-version = "1.88"
+license = "MIT"
+# Evidence stays in Git; package source keeps scripts/reports, not result data.
+exclude = [
+    "/benchmarks/*.json", "/benchmarks/*.json.gz", "/benchmarks/*.prof",
+    "/benchmarks/letter-quality/**", "/src/*.before_*",
+    "/docs/*ARTIFACTS.json", "/docs/*_AUDIT.json", "/docs/*_VERIFICATION.json",
+]
+
+[lib]
+name = "_native"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pyo3 = "=0.29.3"

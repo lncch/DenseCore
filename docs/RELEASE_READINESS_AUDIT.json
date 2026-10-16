@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-14",
+  "base": "7513bce",
+  "readme_sha256": "1edccc524c3c92452cd92e6b6aef8981c0aa801d893b6121e9b48748e8c648f9",
+  "public_api_changes": "docstrings only; runtime execution unchanged",
+  "readme_examples": [
+    {
+      "block": 2,
+      "exit_code": 0,
+      "output": "[0, 1]"
+    },
+    {
+      "block": 3,
+      "exit_code": 0,
+      "output": "8.0"
+    },
+    {
+      "block": 4,
+      "exit_code": 0,
+      "output": "compiled training completed"
+    },
+    {
+      "block": 5,
+      "exit_code": 0,
+      "output": "fused training completed"
+    },
+    {
+      "block": 6,
+      "exit_code": 0,
+      "output": "checkpoint restored"
+    },
+    {
+      "block": 7,
+      "exit_code": 0,
+      "output": "weights converted"
+    }
+  ],
+  "unchanged_shell_blocks_verified_against_prior_execution": 5,
+  "source_python_tests": 290,
+  "rust_release_tests": 53,
+  "manual_rust_benchmarks_ignored": 6,
+  "clean_wheel_tests": 189,
+  "rust_fmt": true,
+  "clippy_warnings_denied": true,
+  "workflow_yaml_parsed": true,
+  "remote_ci_run": false,
+  "benchmark_claims": {
+    "pre_gates": 30,
+    "timed_runs": 150,
+    "final_gates": 150,
+    "all_passed": true,
+    "six_readme_rows_match": true,
+    "repeated_timing": false
+  },
+  "distribution_policy": "Git keeps reviewed evidence; packages exclude result data and scratch; artifact manifests excluded from sdist; wheels include30license/notices files",
+  "artifact_directory": "work/release-readiness-reviewed (outside repository; untracked)",
+  "historical_artifacts_unchanged": true,
+  "source_distribution_install": {
+    "passed": true,
+    "no_build_isolation": true,
+    "tests_passed": 189,
+    "pretrained_prediction": "T",
+    "artifact_sha256": "98e6fafe943acbb782f1562f854700848dd5d411253c9e9ba24cf7f0d8a6e0cc"
+  },
+  "artifact_checker": {
+    "passed": true,
+    "license_payload": 30,
+    "sdist_members": 119
+  },
+  "historical_wheel_hashes_verified": true,
+  "all_11_fence_hashes_match_prior_execution": true
+}

@@ -1,0 +1,31 @@
+{
+  "version": "0.10.0",
+  "base_commit": "7513bce",
+  "status": "audited local candidates; no publication",
+  "build_note": "Current source archive includes final corrections; wheel runtime source/README/licenses match. Built from7513bce plus reviewed working-tree corrections. Artifacts remain outside Git.",
+  "readme_sha256": "1edccc524c3c92452cd92e6b6aef8981c0aa801d893b6121e9b48748e8c648f9",
+  "artifacts": [
+    {
+      "name": "densecore-0.10.0-cp313-cp313-macosx_11_0_arm64.whl",
+      "relative_workspace_path": "work/release-readiness-reviewed/densecore-0.10.0-cp313-cp313-macosx_11_0_arm64.whl",
+      "sha256": "29d3185141c190dadd7eb630793c25a82865f1e87cc1acad7326a03dd3e4c0e2",
+      "bytes": 451683,
+      "git_tracked": false,
+      "platform": "macOS ARM64, CPython3.13",
+      "license_files": 30,
+      "dependency_license_texts": 28,
+      "notices_included": true,
+      "current_readme_metadata": true,
+      "clean_tests_passed": 189
+    },
+    {
+      "name": "densecore-0.10.0.tar.gz",
+      "relative_workspace_path": "work/release-readiness-reviewed/densecore-0.10.0.tar.gz",
+      "sha256": "98e6fafe943acbb782f1562f854700848dd5d411253c9e9ba24cf7f0d8a6e0cc",
+      "bytes": 182926,
+      "git_tracked": false,
+      "source_install_tests_passed": 189,
+      "generated_results_excluded": true
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+maturin==1.15.0
+numpy==2.4.6; python_version < "3.12"
+numpy==2.5.4; python_version >= "3.12"
+pytest==9.1.1
+torch==2.14.1
+safetensors==0.8.0

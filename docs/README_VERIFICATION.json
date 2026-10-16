@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-14",
+  "implementation_base": "b2e5c10",
+  "readme_sha256": "4f1a63ddfa71e80e8526880a0b50b2d205b4b37021ffb8090c4a3fc6ad15999a",
+  "executable_blocks": 11,
+  "python_examples": 6,
+  "shell_blocks": 5,
+  "all_passed": true,
+  "method": "Execute each Python fence in a separate process. Source installation uses a fresh repository snapshot/venv; wheel examples use a separate no-Torch environment. Conversion and contributor checks use fresh pinned development dependencies. Shell benchmark reproduction runs the full protocol. Text diagram is non-executable.",
+  "initial_harness_failure": {
+    "block": 7,
+    "exit_code": 1,
+    "cause": "Existing macOS development environment had a hidden editable .pth file, ignored by Python.",
+    "resolution": "Run conversion after installing development dependencies in the fresh source environment."
+  },
+  "ci": {
+    "existing_workflow": ".github/workflows/wheels.yml",
+    "unchanged": true,
+    "rust": "release tests, fmt and clippy",
+    "python": "installed-wheel tests; three Torch-dependent modules excluded",
+    "remote_run_claimed": false
+  },
+  "historical_readme": {
+    "archive": "docs/archive/README_BEFORE_DOCUMENTATION_MILESTONE.md",
+    "original_sha256": "79c5168733cf082ea1f63281c5a615760abf307b498032d5cfc7027504eba1fd"
+  },
+  "benchmark_reproduction": {
+    "archive": "benchmarks/readme-reproduction-results.json.gz",
+    "sha256": "454dfba2d856f41e3ad7da5647bfaca48dc1d824c0b01f5f130d3fbd16abd3c2",
+    "accepted": true
+  },
+  "checks": [
+    {
+      "block": 0,
+      "language": "sh",
+      "code_sha256": "19402a078baa42b2e6e0b07e892a3f28a4167866b3bb4e4d97165bdf82349757",
+      "environment": "isolated source checkout, fresh venv, release build",
+      "exit_code": 0,
+      "elapsed_seconds": 11.42
+    },
+    {
+      "block": 1,
+      "language": "sh",
+      "code_sha256": "4ff036e4d3d2d0e4314bf7f37c768d2f9556210a3134cc2cfc180bf44025fba6",
+      "environment": "fresh no-Torch wheel environment",
+      "exit_code": 0,
+      "elapsed_seconds": 1.88
+    },
+    {
+      "block": 2,
+      "language": "python",
+      "code_sha256": "dbc990d55138fe6aeb9de1b81bf3014345261b6bbcb405511e3e46a4cfc2d8ac",
+      "environment": "installed wheel without Torch",
+      "exit_code": 0,
+      "elapsed_seconds": 1.836,
+      "output": "[0, 1]"
+    },
+    {
+      "block": 3,
+      "language": "python",
+      "code_sha256": "6b3868e9aca704c882be1944fcc038b307e85d73e6574a5234c414a402f81dc4",
+      "environment": "installed wheel without Torch",
+      "exit_code": 0,
+      "elapsed_seconds": 0.097,
+      "output": "8.0"
+    },
+    {
+      "block": 4,
+      "language": "python",
+      "code_sha256": "dc0929a4af8735dec9506d22973838f8a1c492b2c70c00844277878345c77606",
+      "environment": "installed wheel without Torch",
+      "exit_code": 0,
+      "elapsed_seconds": 0.073,
+      "output": "compiled training completed"
+    },
+    {
+      "block": 5,
+      "language": "python",
+      "code_sha256": "bd13138a858505874281c12bfff72baff0f2150ec392f9981c704e53c61be245",
+      "environment": "installed wheel without Torch",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07,
+      "output": "fused training completed"
+    },
+    {
+      "block": 6,
+      "language": "python",
+      "code_sha256": "70ed90bd8f5de44edce07fad144af3537521a363d29dfcd377c23994ce684b58",
+      "environment": "installed wheel without Torch",
+      "exit_code": 0,
+      "elapsed_seconds": 0.087,
+      "output": "checkpoint restored"
+    },
+    {
+      "block": 7,
+      "language": "python",
+      "code_sha256": "85ef0047c0a66f630f5bd4f4aa025b4c22f38b34b1f25902dd943c8596654cc8",
+      "environment": "fresh source development venv with Torch",
+      "exit_code": 0,
+      "elapsed_seconds": 0.635,
+      "output": "weights converted"
+    },
+    {
+      "block": 8,
+      "language": "sh",
+      "code_sha256": "a12aea642c69c409d091d0a983f3fadbf2617c7c0c7fa5a27fd70eb04129d121",
+      "environment": "installed wheel pretrained-model CLI",
+      "exit_code": 0,
+      "elapsed_seconds": 0.197,
+      "output": "{\n  \"letter\": \"T\",\n  \"probability\": 0.9999953643429517\n}"
+    },
+    {
+      "block": 10,
+      "language": "sh",
+      "code_sha256": "08798bb768036c4466a7cae81a1b60cc475339a837c0d07bfce1b3a876720842",
+      "environment": "fresh source development environment, full benchmark reproduction",
+      "exit_code": 0,
+      "elapsed_seconds": 63.149,
+      "pre_timing_gates": 30,
+      "timed_processes": 150,
+      "final_checks": 150,
+      "all_numerical_gates_passed": true
+    },
+    {
+      "block": 11,
+      "language": "sh",
+      "code_sha256": "93ae34ce185a8df48696957cef151817595d1f18ad05279bb4db515077473dc5",
+      "environment": "fresh source development venv, pinned dependencies, Rust checks/full Python oracle suite",
+      "exit_code": 0,
+      "elapsed_seconds": 33.434,
+      "python_tests_passed": 288,
+      "rust_tests_passed": 53,
+      "manual_rust_benchmarks_ignored": 6,
+      "clippy_warnings_denied": true,
+      "rust_format_check": true
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "regression": {
+    "initial_train_mse": 14.109750747680664,
+    "heldout_mse": 1.7400436647108108e-10,
+    "steps": 100,
+    "passed": true
+  },
+  "classification": {
+    "initial_train_cross_entropy": 0.5560953617095947,
+    "final_train_cross_entropy": 3.306194412289187e-05,
+    "heldout_accuracy": 1.0,
+    "steps": 100,
+    "passed": true
+  }
+}
