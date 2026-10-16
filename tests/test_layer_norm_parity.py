@@ -31,6 +31,7 @@ def test_layer_norm_torch_forward_and_vjp(shape,affine,bias,compiled):
         np.testing.assert_allclose(ours.weight.grad.numpy(),ref.weight.grad.numpy(),rtol=1e-4,atol=1e-5)
         if bias:np.testing.assert_allclose(ours.bias.grad.numpy(),ref.bias.grad.numpy(),rtol=1e-4,atol=1e-5)
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('offset',[0.,100.,10000.,1e6])
 def test_layer_norm_near_constant_rows_and_offsets(offset):
     # Repointed 2026-10-16 (roadmap: PyTorch's bits are the spec; owner approved such repoints):

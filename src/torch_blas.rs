@@ -78,6 +78,113 @@ fn normalize_last_dims(ta: bool, tb: bool, m: usize, n: usize, k: usize, ld: &mu
     }
 }
 
+/// Portable column-major BLAS for platforms without Accelerate: correct results, but not
+/// PyTorch's bits there (PyTorch on Linux uses OpenBLAS or MKL, whose rounding differs).
+/// shortcut: plain loops, slow for large matrices; link a real BLAS when Linux speed matters.
+#[cfg(not(target_os = "macos"))]
+#[allow(clippy::too_many_arguments, clippy::missing_safety_doc)]
+mod accelerate {
+    use std::ffi::{c_char, c_int};
+
+    // c_char is i8 or u8 depending on the target, so the cast is a no-op on some.
+    #[allow(clippy::unnecessary_cast)]
+    fn transposed(c: c_char) -> bool {
+        matches!(c as u8, b'T' | b't' | b'C' | b'c')
+    }
+
+    pub unsafe fn sgemm_(
+        transa: *const c_char,
+        transb: *const c_char,
+        m: *const c_int,
+        n: *const c_int,
+        k: *const c_int,
+        alpha: *const f32,
+        a: *const f32,
+        lda: *const c_int,
+        b: *const f32,
+        ldb: *const c_int,
+        beta: *const f32,
+        c: *mut f32,
+        ldc: *const c_int,
+    ) {
+        // SAFETY: the caller upholds the BLAS contract (pointers cover the strided matrices).
+        unsafe {
+            let (ta, tb) = (transposed(*transa), transposed(*transb));
+            let (m, n, k) = (*m as usize, *n as usize, *k as usize);
+            let (lda, ldb, ldc) = (*lda as usize, *ldb as usize, *ldc as usize);
+            let (alpha, beta) = (*alpha, *beta);
+            for j in 0..n {
+                for i in 0..m {
+                    let mut sum = 0.0f32;
+                    for p in 0..k {
+                        let av = *a.add(if ta { p + i * lda } else { i + p * lda });
+                        let bv = *b.add(if tb { j + p * ldb } else { p + j * ldb });
+                        sum += av * bv;
+                    }
+                    let out = c.add(i + j * ldc);
+                    // BLAS: with beta == 0, C is not read.
+                    *out = if beta == 0.0 {
+                        alpha * sum
+                    } else {
+                        alpha * sum + beta * *out
+                    };
+                }
+            }
+        }
+    }
+
+    pub unsafe fn sgemv_(
+        trans: *const c_char,
+        m: *const c_int,
+        n: *const c_int,
+        alpha: *const f32,
+        a: *const f32,
+        lda: *const c_int,
+        x: *const f32,
+        incx: *const c_int,
+        beta: *const f32,
+        y: *mut f32,
+        incy: *const c_int,
+    ) {
+        // SAFETY: as for sgemm_; increments are positive.
+        unsafe {
+            let t = transposed(*trans);
+            let (m, n, lda) = (*m as usize, *n as usize, *lda as usize);
+            let (incx, incy) = (*incx as usize, *incy as usize);
+            let (alpha, beta) = (*alpha, *beta);
+            let (rows, inner) = if t { (n, m) } else { (m, n) };
+            for r in 0..rows {
+                let mut sum = 0.0f32;
+                for q in 0..inner {
+                    let av = *a.add(if t { q + r * lda } else { r + q * lda });
+                    sum += av * *x.add(q * incx);
+                }
+                let out = y.add(r * incy);
+                *out = if beta == 0.0 {
+                    alpha * sum
+                } else {
+                    alpha * sum + beta * *out
+                };
+            }
+        }
+    }
+
+    pub unsafe fn cblas_sdot(
+        n: c_int,
+        x: *const f32,
+        incx: c_int,
+        y: *const f32,
+        incy: c_int,
+    ) -> f32 {
+        // SAFETY: both pointers cover n elements at their (positive) increments.
+        unsafe {
+            (0..n as usize)
+                .map(|i| *x.add(i * incx as usize) * *y.add(i * incy as usize))
+                .sum()
+        }
+    }
+}
+
 #[cfg(target_os = "macos")]
 mod accelerate {
     use std::ffi::{c_char, c_int};
@@ -210,7 +317,6 @@ pub fn addmm(
         Some(v) => v.as_ptr(),
         None => m2.data[m2.offset..].as_ptr(),
     };
-    #[cfg(target_os = "macos")]
     {
         let (ta_c, tb_c) = (
             if ta { b'T' } else { b'N' } as std::ffi::c_char,
@@ -238,11 +344,6 @@ pub fn addmm(
                 &ldc_,
             );
         }
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        let _ = (a_ptr, b_ptr, ta, tb, lda, ldb, ldc);
-        return Err("PyTorch's BLAS path is wired for macOS Accelerate only".into());
     }
     Ok(result)
 }
@@ -418,7 +519,6 @@ pub fn addmv(
     if !fits {
         return Err("vector layout outside PyTorch's BLAS path".into());
     }
-    #[cfg(target_os = "macos")]
     {
         let t = trans as std::ffi::c_char;
         let (m_, n_, lda_, incx, incy) = (m as i32, n as i32, lda as i32, vec.stride as i32, 1i32);
@@ -439,11 +539,6 @@ pub fn addmv(
                 &incy,
             );
         }
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        let _ = (trans, a_ptr, lda);
-        return Err("PyTorch's BLAS path is wired for macOS Accelerate only".into());
     }
     Ok(result)
 }
@@ -469,7 +564,6 @@ pub fn dot(x: Vector, y: Vector) -> Result<f32, String> {
     if [x.len, incx, incy].iter().any(|&v| v > i32::MAX as usize) {
         return Err("dot layout outside PyTorch's BLAS path".into());
     }
-    #[cfg(target_os = "macos")]
     // SAFETY: both pointers cover `len` elements at their increments; sizes fit i32.
     let value = unsafe {
         accelerate::cblas_sdot(
@@ -480,8 +574,6 @@ pub fn dot(x: Vector, y: Vector) -> Result<f32, String> {
             incy as i32,
         )
     };
-    #[cfg(not(target_os = "macos"))]
-    let value = return Err("PyTorch's BLAS path is wired for macOS Accelerate only".into());
     Ok(value)
 }
 
@@ -519,7 +611,6 @@ pub fn gemm_raw(
     if m == 0 || n == 0 {
         return Ok(());
     }
-    #[cfg(target_os = "macos")]
     {
         let (ta_c, tb_c) = (
             if ta { b'T' } else { b'N' } as std::ffi::c_char,
@@ -546,11 +637,6 @@ pub fn gemm_raw(
                 &ldc_,
             );
         }
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        let _ = (a, b, c, alpha, beta);
-        return Err("PyTorch's BLAS path is wired for macOS Accelerate only".into());
     }
     Ok(())
 }

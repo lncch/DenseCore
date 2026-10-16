@@ -7,6 +7,7 @@ import densecore as d
 torch = pytest.importorskip('torch')
 
 
+@pytest.mark.mac_exact
 def test_layer_norm_bits():
     rng = np.random.default_rng(6)
     bad = []

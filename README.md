@@ -1,4 +1,17 @@
+<div align="center">
+
+<img src="assets/logo.svg" alt="DenseCore logo" width="145">
+
 # DenseCore
+
+**A Rust-native tensor and deep learning framework for Python.**
+
+[![Version](https://img.shields.io/badge/version-v0.10.0-blue)](https://github.com/lncch/DenseCore)
+![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13-3776AB)
+![Rust](https://img.shields.io/badge/core-Rust-CE422B)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+</div>
 
 DenseCore is an MIT-licensed deep-learning library: a Rust engine with a PyTorch-shaped Python API, for CPU training and inference of small models.
 

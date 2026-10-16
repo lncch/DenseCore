@@ -124,5 +124,29 @@
       "THIRD_PARTY_LICENSES/unicode-ident-1.0.27/LICENSE-APACHE",
       "THIRD_PARTY_LICENSES/unicode-ident-1.0.27/LICENSE-MIT"
     ]
+  },
+  {
+    "name": "pytorch (ported source)",
+    "version": "2.14.1",
+    "license": "BSD-3-Clause",
+    "files": [
+      "THIRD_PARTY_LICENSES/pytorch-2.14.1/LICENSE"
+    ]
+  },
+  {
+    "name": "sleef (ported source)",
+    "version": "5a1d179",
+    "license": "BSL-1.0",
+    "files": [
+      "THIRD_PARTY_LICENSES/sleef-5a1d179/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "arm-optimized-routines (ported source)",
+    "version": "via PyTorch 2.14.1",
+    "license": "MIT OR Apache-2.0 WITH LLVM-exception",
+    "files": [
+      "THIRD_PARTY_LICENSES/arm-optimized-routines/LICENSE"
+    ]
   }
 ]

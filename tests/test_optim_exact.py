@@ -18,6 +18,7 @@ def _same(a, b):
     ("Adam", dict(lr=0.01, weight_decay=0.05)), ("Adam", dict(betas=(0.3, 0.9))),
     ("SGD", dict(lr=0.1)), ("SGD", dict(lr=0.1, momentum=0.9, weight_decay=0.01)),
 ])
+@pytest.mark.mac_exact
 @pytest.mark.parametrize("clip", [None, 1.0])
 def test_optimizer_steps_bits(name, kwargs, clip):
     torch.set_num_threads(d.get_num_threads())
@@ -62,6 +63,7 @@ def _tiny_gpt(T, F, vocab=17, n=16, heads=2, block=12):
     return GPT()
 
 
+@pytest.mark.mac_exact
 def test_tiny_gpt_training_bits():
     torch.set_num_threads(d.get_num_threads())
     torch.manual_seed(0); d.manual_seed(0)

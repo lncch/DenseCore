@@ -84,6 +84,7 @@ def test_dropout_values_and_grads(fn):
     assert _same(yt.detach().numpy(), yd.numpy()) and _same(tt.grad.numpy(), dt.grad.numpy())
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize("shape", [(2, 4, 64, 32), (1, 2, 7, 5), (2, 3, 9, 4)])
 @pytest.mark.parametrize("causal,scale", [(True, None), (False, 0.3), (False, -0.5)])
 def test_attention_with_dropout_bits(shape, causal, scale):

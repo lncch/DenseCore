@@ -7,6 +7,7 @@ import densecore as d
 torch = pytest.importorskip('torch')
 
 
+@pytest.mark.mac_exact
 def test_softmax_and_log_softmax_bits():
     rng = np.random.default_rng(8)
     bad = []
@@ -24,6 +25,7 @@ def test_softmax_and_log_softmax_bits():
     assert bad == []
 
 
+@pytest.mark.mac_exact
 def test_cross_entropy_bits():
     rng = np.random.default_rng(10)
     bad = []

@@ -7,6 +7,7 @@ import densecore as d
 torch = pytest.importorskip('torch')
 
 
+@pytest.mark.mac_exact
 def test_matmul_and_linear_bits():
     rng = np.random.default_rng(3)
     bad = []
@@ -35,6 +36,7 @@ def test_matmul_and_linear_bits():
     assert bad == []
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('transposed', [False, True])
 def test_bmm_bits(transposed):
     # Small products use PyTorch's loop as compiled (fused, or vectorized when both operands
@@ -56,6 +58,7 @@ def test_bmm_bits(transposed):
             assert np.array_equal(got.view(np.uint32), want.view(np.uint32)), (bs, m, k, n)
 
 
+@pytest.mark.mac_exact
 def test_matmul_routing_bits():
     """`@` routes like PyTorch's _matmul_impl (dot, mv, mm, folded mm/mv, bmm) with the same
     strides, so every case gives PyTorch's bits, gradients included."""

@@ -18,6 +18,7 @@ def _reference(x, approximate):
         return x / (1.0 + np.exp(-2.0 * inner))
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('approximate', MODES)
 def test_gelu_matches_float64_reference_including_negative_tail(approximate):
     values = np.concatenate([np.linspace(-12, 12, 481), [-30., -9., -6., -5., -3., 1e-30, -1e-30]])
@@ -41,6 +42,7 @@ def test_gelu_strided_full_jacobian(approximate):
     assert d.autograd.gradcheck(lambda a: a.T[::2].gelu(approximate), x)
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('approximate', MODES)
 def test_gelu_values_and_gradients_match_torch_with_special_values(approximate):
     torch = pytest.importorskip('torch')

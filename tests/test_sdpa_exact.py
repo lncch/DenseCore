@@ -12,6 +12,7 @@ torch = pytest.importorskip('torch')
     (1, 2, 100, 37, 12, False, None), (1, 1, 200, 200, 8, True, None), (1, 1, 600, 600, 8, False, None),
     (1, 1, 800, 800, 4, True, None), (1, 2, 9, 1030, 6, False, None), (1, 2, 64, 64, 16, True, 0.3),
 ])
+@pytest.mark.mac_exact
 def test_sdpa_bits(B, H, L, S, E, causal, scale):
     rng = np.random.default_rng(L * 31 + S)
     q, g = (rng.normal(size=(B, H, L, E)).astype(np.float32) for _ in range(2))
@@ -28,6 +29,7 @@ def test_sdpa_bits(B, H, L, S, E, causal, scale):
     assert bad == []
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize("B,H,L,S,E", [(2, 2, 7, 7, 5), (1, 2, 200, 37, 12), (1, 1, 9, 1030, 6), (2, 3, 64, 64, 16)])
 @pytest.mark.parametrize("kind", ["bool2d", "float2d", "bool4d_b1", "float4d_1h", "row"])
 def test_sdpa_masked_bits(B, H, L, S, E, kind):

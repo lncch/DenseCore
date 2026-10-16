@@ -31,6 +31,7 @@ def _schedulers(L, opt):
     }
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize("opt_name", ["SGD", "AdamW"])
 @pytest.mark.parametrize("name", list(_schedulers(None, None)))
 def test_scheduler_matches_torch(name, opt_name):

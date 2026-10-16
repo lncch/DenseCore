@@ -64,6 +64,11 @@ class Tensor:
                 info = np.iinfo(_STORAGE[dtype])
                 if source.min() < info.min or source.max() > info.max:
                     raise OverflowError(f"value cannot be converted to {dtype} without overflow")
+            if dtype == "uint8" and source.dtype.kind in "fc":
+                # PyTorch casts float -> uint8 through int64 (c10 static_cast_with_inter_type),
+                # so negative values wrap the same way on every platform.
+                with np.errstate(invalid="ignore"):
+                    source = np.real(source).astype(np.int64)
             if dtype == "bfloat16":
                 array = _bfloat16_bits(source)
             else:

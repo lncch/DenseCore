@@ -40,6 +40,7 @@ def run(module, f, inputs, weights):
     return [np_(out)] + [np_(t.grad) for t in tensors]
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize('name', RANGES)
 def test_unary_values_and_gradients(name, threads):
     rng = np.random.default_rng(len(name) * 7 + threads)
@@ -60,6 +61,7 @@ def test_wide_inputs_cover_special_values(threads):
         assert same_bits(getattr(d, name)(d.tensor(x)).numpy(), getattr(torch, name)(torch.from_numpy(x)).numpy()), name
 
 
+@pytest.mark.mac_exact
 def test_gelu_values_and_gradients(threads):
     rng = np.random.default_rng(5)
     for n in (1, 7, 9, 2049, 16385, 40001):

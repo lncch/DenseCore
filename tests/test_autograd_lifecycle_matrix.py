@@ -257,6 +257,7 @@ def test_empty_whole_reduction_lifecycle(compiled, mean):
     assert_retained_lifecycle(output, [(x, np.empty(x.shape, np.float32))])
 
 
+@pytest.mark.mac_exact
 @pytest.mark.parametrize("kind", ["linear", "layer_norm"])
 @pytest.mark.parametrize("compiled", [False, True])
 @pytest.mark.parametrize("empty", [False, True])
